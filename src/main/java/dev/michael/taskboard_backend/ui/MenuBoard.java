@@ -38,8 +38,8 @@ public class MenuBoard {
                 case 1 -> createCard();
                 case 2 -> moveCard();
                 case 3 -> cancelCard();
-                case 4 -> System.out.println("Bloquear card (em breve)");
-                case 5 -> System.out.println("Desbloquear card (em breve)");
+                case 4 -> blockCard();
+                case 5 -> unblockCard();
                 case 6 -> System.out.println("Voltando ao menu principal...");
                 default -> System.out.println("Opção inválida!");
             }
@@ -147,11 +147,51 @@ public class MenuBoard {
         }
     }
 
-    // private void blockCard() {
-    //     System.out.println("Bloquear card (em breve)");
-    // }
+    private void blockCard() {
+        System.out.println("\n--- Bloquear card ---");
+        board.getColumns().forEach(col ->
+            col.getCards().forEach(c ->
+                System.out.println(c.getId() + " - " + c.getTitle())
+            )
+        );
 
-    // private void unblockCard() {
-    //     System.out.println("Desbloquear card (em breve)");
-    // }
+        System.out.println("Digite o ID do card para bloquear: ");
+        Long cardId = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.print("Motivo do bloqueio: ");
+        String reason = scanner.nextLine();
+
+        try {
+            cardService.blockCard(cardId, reason);
+            System.out.println("Card bloqueado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void unblockCard() {
+        System.out.println("\n--- Desbloquear card ---");
+        board.getColumns().forEach(col -> 
+            col.getCards().forEach(c -> {
+                if (c.isBlocked()) {
+                    System.out.println(c.getId() + " - " + c.getTitle());
+                }
+            })
+        );
+
+        System.out.print("Digite o ID do card para desbloquear: ");
+        Long cardId = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.print("Motivo do desbloqueio: ");
+        String reason = scanner.nextLine();
+
+        try {
+            cardService.unblockCard(cardId, reason);
+            System.out.println("Card desbloqueado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
 }
