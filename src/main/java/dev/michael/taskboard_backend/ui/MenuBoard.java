@@ -37,12 +37,11 @@ public class MenuBoard {
             switch (option) {
                 case 1 -> createCard();
                 case 2 -> moveCard();
-                case 3 -> System.out.println("Cancelar card (em breve)");
+                case 3 -> cancelCard();
                 case 4 -> System.out.println("Bloquear card (em breve)");
                 case 5 -> System.out.println("Desbloquear card (em breve)");
                 case 6 -> System.out.println("Voltando ao menu principal...");
                 default -> System.out.println("Opção inválida!");
-
             }
         }
     }
@@ -120,13 +119,33 @@ public class MenuBoard {
         return;
     }
 
-    cardService.moveCard(card, colunaDestino);
+    cardService.moveCard(card.getId(), colunaDestino);
     System.out.println("Card movido para a coluna: " + colunaDestino.getName());
     }
 
-    // private void cancelCard() {
-    //     System.out.println("Cancelar card (em breve)");
-    // }
+    private void cancelCard() {
+        System.out.println("\n--- Cancelar Card ---");
+        var cards = cardService.findAll();
+        if (cards.isEmpty()) {
+            System.out.println("Nenhum card cadastrado.");
+            return;
+        }
+
+        cards.forEach(c -> System.out.println(c.getId() + " - " + c.getTitle()));
+
+        System.out.print("Digite o ID do card para cancelar: ");
+        Long cardId = scanner.nextLong();
+        scanner.nextLine();
+
+        try {
+            cardService.cancelCard(cardId);
+            System.out.println("Card cancelado com sucesso!");
+
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+
+        }
+    }
 
     // private void blockCard() {
     //     System.out.println("Bloquear card (em breve)");

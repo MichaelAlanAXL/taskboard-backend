@@ -35,10 +35,14 @@ public class Board {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "created_at", nullable=false, updatable=false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     
-    @OneToMany(mappedBy="board", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ColumnEntity> columns = new ArrayList<>();    
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ColumnEntity> columns = new ArrayList<>();
+
+    // @OneToMany(mappedBy = "Column.board", fetch = FetchType.LAZY)
+    // private List<Card> cards = new ArrayList<>();
     
 }

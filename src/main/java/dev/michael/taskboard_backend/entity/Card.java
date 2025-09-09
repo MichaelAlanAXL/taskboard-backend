@@ -49,6 +49,12 @@ public class Card {
     @Column(name = "blocked_reason")
     private String blockedReason;
 
+    @Column(name = "canceled_at")
+    private LocalDateTime canceledAt;
+
+    @Column(name = "canceled_by")
+    private String canceledBy;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
